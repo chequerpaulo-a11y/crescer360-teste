@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0A0A0A">
+<meta name="supported-color-schemes" content="dark">
+<title>CRESCER 360° · Teste Comportamental</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark only;
+    --bg: #0A0A0A;
+    --bg-card: #141414;
+    --bg-input: #1C1C1C;
+    --gold: #C9A24B;
+    --gold-soft: #D9B872;
+    --text: #F5F5F5;
+    --text-dim: #B8B8B8;
+    --text-faint: #7E7E7E;
+    --border: #2A2A2A;
+    --acao: #E07856;
+    --com:  #C9A24B;
+    --apoio: #4A8A9C;
+    --analise: #5B6E8F;
+  }
+  html { color-scheme: dark; background: #0A0A0A; }
+  *,*::before,*::after { box-sizing: border-box; }
+  html,body {
+    margin: 0; padding: 0;
+    background: #0A0A0A !important;
+    color: #F5F5F5 !important;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+  }
+  body { min-height: 100vh; padding: 24px 16px 48px; }
+  .container { max-width: 720px; margin: 0 auto; }
+
+  header.brand {
+    text-align: center;
+    padding: 8px 0 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .brand-mark {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+  }
+  .brand-sub {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1.15;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+    color: #F5F5F5 !important;
+  }
+  h1 .accent { color: #C9A24B !important; font-style: italic; }
+  .lead {
+    color: #B8B8B8 !important;
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0 0 32px;
+    max-width: 560px;
+  }
+
+  .step-label {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: #C9A24B !important;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  /* Form */
+  .field { margin-bottom: 20px; }
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #F5F5F5 !important;
+  }
+  label .req { color: #C9A24B !important; margin-left: 2px; }
+  input[type="text"], input[type="email"], input[type="tel"] {
+    width: 100%;
+    background: #1C1C1C !important;
+    border: 1px solid #2A2A2A;
+    color: #F5F5F5 !important;
+    padding: 14px 16px;
+    font-size: 16px;
+    font-family: inherit;
+    border-radius: 4px;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  input::placeholder { color: #7E7E7E !important; opacity: 1; }
+  input:focus {
+    outline: none;
+    border-color: #C9A24B;
+  }
+  .hint { font-size: 12px; color: var(--text-faint); margin-top: 6px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 480px) { .field-row { grid-template-columns: 1fr; } }
+
+  /* Buttons */
+  button.primary, button.secondary {
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 16px 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+  button.primary {
+    background: var(--gold);
+    color: var(--bg);
+  }
+  button.primary:hover { background: var(--gold-soft); }
+  button.primary:disabled { background: var(--border); color: var(--text-faint); cursor: not-allowed; }
+  button.secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  button.secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  .actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+
+  /* Adjective grid */
+  .counter-bar {
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    padding: 12px 0;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .counter {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--gold);
+  }
+  .counter span { color: var(--text-faint); font-size: 13px; font-family: 'Inter', sans-serif; }
+  .counter-status { font-size: 12px; color: var(--text-faint); }
+  .counter-status.ok { color: var(--gold-soft); }
+  .counter-status.warn { color: var(--acao); }
+
+  .adj-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  @media (min-width: 600px) { .adj-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .adj {
+    display: flex;
+    align-items: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 12px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s;
+    font-size: 14px;
+    min-height: 48px;
+  }
+  .adj:hover { border-color: var(--gold-soft); }
+  .adj.selected {
+    background: rgba(201, 162, 75, 0.12);
+    border-color: var(--gold);
+    color: var(--gold-soft);
+  }
+  .adj input { display: none; }
+
+  /* Result */
+  .archetype-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 48px;
+    color: var(--gold);
+    line-height: 1.1;
+    margin: 16px 0 4px;
+  }
+  .archetype-combo {
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 32px;
+  }
+
+  .chart-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+  .chart-title {
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 20px;
+  }
+  .axis-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 40px;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    font-size: 13px;
+  }
+  @media (max-width: 480px) {
+    .axis-row { grid-template-columns: 110px 1fr 40px; font-size: 12px; }
+  }
+  .axis-label { color: var(--text); font-weight: 500; }
+  .axis-track {
+    height: 10px;
+    background: var(--bg-input);
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+  .axis-track::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -3px;
+    bottom: -3px;
+    width: 1px;
+    background: var(--text-faint);
+    opacity: 0.4;
+  }
+  .axis-fill { height: 100%; border-radius: 6px; transition: width 0.8s cubic-bezier(.2,.8,.2,1); }
+  .axis-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    text-align: right;
+    color: var(--gold);
+  }
+  .axis-value.low { color: var(--text-faint); }
+
+  .leitura {
+    line-height: 1.65;
+    font-size: 15px;
+    color: var(--text);
+  }
+  .leitura p { margin: 0 0 16px; }
+  .leitura .destaque {
+    border-left: 2px solid var(--gold);
+    padding: 4px 0 4px 16px;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  footer.signature {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-faint);
+    line-height: 1.6;
+  }
+  footer.signature .gold { color: var(--gold); letter-spacing: 0.1em; }
+
+  /* Erro */
+  .error-msg {
+    background: rgba(224, 120, 86, 0.1);
+    border: 1px solid var(--acao);
+    color: var(--acao);
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  /* Telas */
+  .screen { display: none; }
+  .screen.active { display: block; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Proteções específicas Safari iOS — impedir auto-darkening e ajustes do sistema */
+  @supports (-webkit-touch-callout: none) {
+    body, html { background-color: #0A0A0A !important; }
+    .adj, .chart-card { background-color: #141414 !important; }
+    input { background-color: #1C1C1C !important; color: #F5F5F5 !important; }
+  }
+  @media (prefers-color-scheme: light) {
+    /* Mesmo em sistema light, mantém o tema escuro */
+    html, body { background: #0A0A0A !important; color: #F5F5F5 !important; }
+  }
+  /* Garante que iOS Safari não force "Smart Invert" sobre elementos */
+  body { -webkit-text-fill-color: #F5F5F5; }
+  input { -webkit-text-fill-color: #F5F5F5; }
+  .brand-mark { -webkit-text-fill-color: #C9A24B; }
+  h1 { -webkit-text-fill-color: #F5F5F5; }
+  h1 .accent { -webkit-text-fill-color: #C9A24B; }
+  .archetype-name { -webkit-text-fill-color: #C9A24B; }
+  .step-label { -webkit-text-fill-color: #C9A24B; }
+  label { -webkit-text-fill-color: #F5F5F5; }
+  .lead { -webkit-text-fill-color: #B8B8B8; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="brand">
+    <div class="brand-mark">CRESCER 360°</div>
+    <div class="brand-sub">Mapeamento Comportamental</div>
+  </header>
+
+  <!-- ============ TELA 1: DADOS PESSOAIS ============ -->
+  <section id="screen-dados" class="screen active">
+    <div class="step-label">Etapa 1 de 2</div>
+    <h1>Vamos começar pelo <span class="accent">essencial</span>.</h1>
+    <p class="lead">Antes do teste, preciso de alguns dados para personalizar seu resultado. Leva menos de 1 minuto.</p>
+
+    <div id="erro-dados" class="error-msg" style="display:none"></div>
+
+    <div class="field">
+      <label for="nome">Nome completo<span class="req">*</span></label>
+      <input type="text" id="nome" placeholder="Como você se chama?">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="whatsapp">WhatsApp<span class="req">*</span></label>
+        <input type="tel" id="whatsapp" placeholder="(00) 00000-0000">
+      </div>
+      <div class="field">
+        <label for="email">E-mail<span class="req">*</span></label>
+        <input type="email" id="email" placeholder="seu@email.com">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="cargo">Cargo</label>
+        <input type="text" id="cargo" placeholder="Sua função atual">
+      </div>
+      <div class="field">
+        <label for="empresa">Empresa</label>
+        <input type="text" id="empresa" placeholder="Onde você atua">
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="primary" onclick="irParaTeste()">Iniciar o teste →</button>
+    </div>
+  </section>
+
+  <!-- ============ TELA 2: ADJETIVOS ============ -->
+  <section id="screen-teste" class="screen">
+    <div class="step-label">Etapa 2 de 2</div>
+    <h1>Marque o que <span class="accent">descreve você</span>.</h1>
+    <p class="lead">Selecione, sem pensar demais, os adjetivos que melhor representam seu comportamento no dia a dia. <strong style="color:var(--gold-soft)">De 14 a 35 palavras.</strong></p>
+
+    <div class="counter-bar">
+      <div class="counter"><span id="cont-num">0</span>/35 <span>marcados</span></div>
+      <div class="counter-status" id="cont-status">mínimo 14</div>
+    </div>
+
+    <div class="adj-grid" id="adj-grid"></div>
+
+    <div class="actions">
+      <button class="secondary" onclick="voltarParaDados()">← Voltar</button>
+      <button class="primary" id="btn-resultado" onclick="gerarResultado()" disabled>Ver meu resultado →</button>
+    </div>
+  </section>
+
+  <!-- ============ TELA 3: RESULTADO ============ -->
+  <section id="screen-resultado" class="screen">
+    <div class="step-label">Seu perfil comportamental</div>
+    <div class="archetype-name" id="r-nome">—</div>
+    <div class="archetype-combo" id="r-combo">—</div>
+
+    <div class="leitura" id="r-leitura"></div>
+
+    <div class="actions">
+      <button class="secondary" onclick="recomecar()">Fazer novo teste</button>
+    </div>
+  </section>
+
+  <footer class="signature">
+    <div class="gold">PAULO CHEQUER</div>
+    <div>Consultor de Negócios · Mentor · Idealizador do CRESCER 360°</div>
+  </footer>
+
+</div>
+
+<script>
+// ============================================================
+// CRESCER 360° — Lógica do teste
+// Gabarito, fórmula e arquétipos validados em conversa com Paulo
+// ============================================================
+
+const GABARITO = {
+  ACAO: ['Determinado','Decidido','Direto','Assertivo','Corajoso','Competitivo','Ousado','Audaz','Empreendedor','Independente','Enérgico','Dinâmico','Proativo','Autoconfiante','Questionador','Inquieto','Líder','Focado em resultado'],
+  COMUNICACAO: ['Comunicativo','Entusiasta','Otimista','Extrovertido','Espontâneo','Persuasivo','Carismático','Envolvente','Expressivo','Animado','Sociável','Caloroso','Inspirador','Brincalhão','Autêntico','Versátil','Criativo','Original'],
+  APOIO: ['Leal','Paciente','Calmo','Confiável','Constante','Estável','Compreensivo','Atencioso','Gentil','Pacífico','Colaborativo','Diplomático','Acolhedor','Respeitoso','Amigo','Cortês','Flexível','Humilde'],
+  ANALISE: ['Analítico','Detalhista','Preciso','Perfeccionista','Organizado','Sistemático','Criterioso','Metódico','Disciplinado','Meticuloso','Cauteloso','Prudente','Profundo','Lógico','Responsável','Consistente','Realista','Sensato']
+};
+
+const EIXO_INFO = {
+  ACAO:        { sigla:'D', nome:'Ação e Direção',                 cor: 'var(--acao)' },
+  COMUNICACAO: { sigla:'I', nome:'Comunicação e Relacionamento',   cor: 'var(--com)' },
+  APOIO:       { sigla:'S', nome:'Apoio e Estabilidade',           cor: 'var(--apoio)' },
+  ANALISE:     { sigla:'C', nome:'Análise e Precisão',             cor: 'var(--analise)' }
+};
+
+// 16 arquétipos com nomenclatura aprovada e descrição característica
+const ARQUETIPOS = {
+  // 4 puros
+  'D':  {
+    nome:'O Realizador',
+    combo:'Ação e Direção (puro)',
+    descricao:'Realização concentrada. Move-se por meta e não teme o confronto. Decide rápido sob pressão, foca no resultado e tem coragem de assumir riscos onde os outros recuam. Onde há paralisia, é ele quem faz acontecer. Sua força é o senso de urgência e a capacidade de virar a chave. O ponto de atenção é a impulsividade e a baixa tolerância ao erro alheio: pode passar por cima das pessoas e centralizar decisões que precisariam ser compartilhadas.'
+  },
+  'I':  {
+    nome:'O Encantador',
+    combo:'Comunicação e Relacionamento (puro)',
+    descricao:'Energia e influência em estado puro. Anima o ambiente, conecta pessoas e faz todos acreditarem que é possível. Sua comunicação é seu maior ativo: persuade, inspira e engaja pela palavra e pela presença. Onde ele está, o time esquenta. O ponto de atenção é a falta de foco e a dispersão: começa muitas frentes, conclui poucas, e a equipe pode esfriar quando ele não está presente — o que torna o desenvolvimento de estrutura e disciplina seu maior caminho de crescimento.'
+  },
+  'S':  {
+    nome:'O Porto',
+    combo:'Apoio e Estabilidade (puro)',
+    descricao:'Constância e lealdade levadas ao limite. É a base segura sobre a qual o time se apoia — paciente, leal, previsível. Onde há instabilidade, ele acalma; onde há conflito, ele media. Cria ambientes de confiança e relacionamentos de longo prazo. O ponto de atenção é a dificuldade de dizer não e a resistência à mudança: pode adiar decisões difíceis em nome da harmonia e segurar o time no seguro mesmo quando o cenário pede movimento.'
+  },
+  'C':  {
+    nome:'O Perito',
+    combo:'Análise e Precisão (puro)',
+    descricao:'Excelência técnica em estado bruto. É a referência de qualidade — o expert em quem todos confiam quando o assunto exige profundidade. Pensa antes de agir, busca a resposta certa e não tolera o "mais ou menos". Sua autoridade vem do domínio e do método. O ponto de atenção é o perfeccionismo paralisante: pode demorar a decidir em nome do certo, ser duro consigo mesmo e ter dificuldade de soltar o controle sobre o detalhe.'
+  },
+  // 12 combinados
+  'DI': {
+    nome:'O Comandante',
+    combo:'Ação + Comunicação',
+    descricao:'Decide com firmeza e arrasta as pessoas atrás. Une a coragem de quem não teme o confronto ao carisma de quem inspira. Aponta o rumo, comunica com clareza e mobiliza o time pela força da convicção. É o líder que assume a frente em momentos de virada e tem energia para levar muita gente junto. O ponto de atenção é a combinação de impulsividade com excesso de otimismo: pode abrir muitas frentes ao mesmo tempo, decidir no impulso e cobrar entrega sem perceber que o time precisa de mais estrutura.'
+  },
+  'DS': {
+    nome:'O Maestro',
+    combo:'Ação + Apoio',
+    descricao:'Comanda sem perder o time. Firme na meta, leal com as pessoas. Não atropela como o Realizador puro nem evita conflito como os perfis de relacionamento — decide com firmeza, mas não abandona ninguém pelo caminho. Equilibra exigência e cuidado, o que o torna referência para equipes que precisam de direção e segurança ao mesmo tempo. O ponto de atenção é a tensão interna entre a pressa de decidir e a vontade de manter a harmonia: pode segurar conversas difíceis tempo demais por buscar consenso.'
+  },
+  'DC': {
+    nome:'O Estrategista',
+    combo:'Ação + Análise',
+    descricao:'Decide rápido, mas exige fundamento. Une a coragem da decisão à exigência do rigor. Lê risco com profundidade, planeja com método e executa com firmeza — quer o resultado, feito do jeito certo. É o líder natural para operações complexas, reestruturações e movimentos que combinam pressão e precisão. O ponto de atenção é a baixa tolerância ao erro somada à baixa tolerância à derrota: pode sufocar entre pressa e cobrança, exigir além do razoável e ter dificuldade de confiar na execução do time.'
+  },
+  'ID': {
+    nome:'O Embaixador',
+    combo:'Comunicação + Ação',
+    descricao:'Conquista pela palavra e executa pela coragem. Aqui a relação vem primeiro: engaja, encanta e, a partir do engajamento, age. Tem energia de palco com vontade de realizar — vende, expande, abre mercados e mobiliza pessoas pela influência. É o perfil clássico do empreendedor que cresce pelo carisma. O ponto de atenção é a combinação de excesso de otimismo com dispersão: precisa de estrutura ao redor para sustentar o ritmo, e tende a depender da própria presença para manter o time performando.'
+  },
+  'IS': {
+    nome:'O Anfitrião',
+    combo:'Comunicação + Apoio',
+    descricao:'Une as pessoas pelo afeto. Soma o calor de quem comunica à lealdade de quem cuida. Cria ambientes onde as pessoas querem ficar — sabe ler o clima, antecipar o que cada um precisa e construir pertencimento. É o líder natural para cultura, atendimento, gestão de pessoas e times que vivem de coesão. O ponto de atenção é a dificuldade com conversas difíceis: evita conflito, adia decisões sobre pessoas e pode escorregar para uma liderança paternalista, em que cuida demais e desenvolve de menos.'
+  },
+  'IC': {
+    nome:'O Mediador',
+    combo:'Comunicação + Análise',
+    descricao:'O comunicador que se ancora em dados. Vende com prova, persuade com fundamento. Combina o brilho da influência ao rigor da análise — encanta e justifica ao mesmo tempo. É uma combinação rara, porque une opostos: a expansão da comunicação e a contenção da análise. Funciona muito bem em consultoria, treinamento técnico e vendas complexas. O ponto de atenção é a tensão entre o impulso de comunicar e a exigência de revisar: pode hesitar entre soltar e refinar, e adiar a entrega buscando o argumento perfeito.'
+  },
+  'SD': {
+    nome:'O Guardião',
+    combo:'Apoio + Ação',
+    descricao:'O líder servidor que, quando precisa, assume o comando. Cuida primeiro, decide quando o cenário exige. A firmeza está a serviço do time, não acima dele — protege, sustenta e age sem hesitar quando há ameaça à estabilidade. É o perfil que segura equipes em crise sem perder o vínculo. O ponto de atenção é segurar a decisão firme tempo demais por buscar harmonia: quando a situação pede confronto, pode demorar a sair do modo "cuidar" para o modo "decidir".'
+  },
+  'SI': {
+    nome:'O Mentor',
+    combo:'Apoio + Comunicação',
+    descricao:'O líder servidor que escuta antes de agir. Combina a paciência de quem acolhe à habilidade de se relacionar. As pessoas confiam nele e o procuram para conselho, mediação, desabafo. Sua autoridade não vem do poder, vem da presença que acalma. Brilha em mentoria, desenvolvimento de pessoas e mediação de conflitos. O ponto de atenção é a dificuldade de dizer não: absorve o trabalho do time, sobrecarrega-se com demandas alheias e corre o risco de cair na liderança paternalista.'
+  },
+  'SC': {
+    nome:'O Administrador',
+    combo:'Apoio + Análise',
+    descricao:'Sustenta com método. Une a constância de quem nunca abandona o barco à organização de quem segue o processo. É a base sólida da operação — previsível, confiável, atento ao detalhe e fiel ao padrão. Funciona como nenhum outro em operações estáveis, gestão de longo prazo e áreas de continuidade. O ponto de atenção é a resistência à mudança duplicada: o apoio segura na harmonia, a análise segura no certo, e juntos podem manter o time no seguro mesmo quando o cenário exige movimento e velocidade.'
+  },
+  'CD': {
+    nome:'O Arquiteto',
+    combo:'Análise + Ação',
+    descricao:'Constrói com rigor e entrega com firmeza. Une a profundidade analítica de quem busca excelência à determinação de quem decide. Planeja minuciosamente, antecipa cenários e executa sem hesitar quando o plano está pronto. É o perfil natural para estratégia, engenharia de processos e projetos críticos que combinam complexidade e pressão. O ponto de atenção é o perfeccionismo somado à impaciência: exige demais de si e dos outros, pode travar no detalhe em nome do certo e deixar o lado humano em segundo plano.'
+  },
+  'CI': {
+    nome:'O Professor',
+    combo:'Análise + Comunicação',
+    descricao:'O analista que comunica bem. O técnico que ensina e encanta. Soma a profundidade do rigor à clareza de quem sabe traduzir o complexo em linguagem simples. É uma combinação rara, porque une o introvertido do método com a expansão da comunicação. Brilha em educação, divulgação técnica, consultoria especializada — papéis que exigem autoridade e didática ao mesmo tempo. O ponto de atenção é a tensão entre o rigor que revisa e a vontade de comunicar: pode adiar a entrega buscando o detalhe perfeito, e ter dificuldade de assumir a frente quando o momento pede menos explicação e mais decisão.'
+  },
+  'CS': {
+    nome:'O Especialista',
+    combo:'Análise + Apoio',
+    descricao:'O líder técnico que sustenta a qualidade no tempo. Soma a precisão de quem não erra à constância de quem não abandona. É o guardião do padrão — discreto, profundo, indispensável. Funciona como referência em áreas técnicas, compliance, qualidade e funções que exigem domínio e continuidade. Sua autoridade vem do domínio combinado com a confiança que inspira. O ponto de atenção é o excesso de cautela somado à autocrítica: demora a agir, cobra-se além do necessário e tende a evitar exposição mesmo quando seu conhecimento seria decisivo na conversa.'
+  }
+};
+
+const SIGLA = { ACAO:'D', COMUNICACAO:'I', APOIO:'S', ANALISE:'C' };
+const POR_SIGLA = { D:'ACAO', I:'COMUNICACAO', S:'APOIO', C:'ANALISE' };
+
+// Estado
+let dados = {};
+let selecionados = new Set();
+
+// ============ Construção da grade ============
+function montarGrade() {
+  const grid = document.getElementById('adj-grid');
+  // Embaralha as 72 palavras (Fisher-Yates) para não dar pista de eixo pela posição
+  const todas = [
+    ...GABARITO.ACAO, ...GABARITO.COMUNICACAO,
+    ...GABARITO.APOIO, ...GABARITO.ANALISE
+  ];
+  for (let i = todas.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [todas[i], todas[j]] = [todas[j], todas[i]];
+  }
+  grid.innerHTML = todas.map(palavra => `
+    <label class="adj" data-palavra="${palavra}">
+      <input type="checkbox" value="${palavra}">
+      <span>${palavra}</span>
+    </label>
+  `).join('');
+  grid.querySelectorAll('.adj').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      const palavra = el.dataset.palavra;
+      if (selecionados.has(palavra)) {
+        selecionados.delete(palavra);
+        el.classList.remove('selected');
+      } else {
+        if (selecionados.size >= 35) return; // teto
+        selecionados.add(palavra);
+        el.classList.add('selected');
+      }
+      atualizarContador();
+    });
+  });
+}
+
+function atualizarContador() {
+  const n = selecionados.size;
+  document.getElementById('cont-num').textContent = n;
+  const status = document.getElementById('cont-status');
+  const btn = document.getElementById('btn-resultado');
+  if (n < 14) {
+    status.textContent = `faltam ${14 - n} para o mínimo`;
+    status.className = 'counter-status warn';
+    btn.disabled = true;
+  } else if (n >= 14 && n <= 35) {
+    status.textContent = n === 35 ? 'limite máximo atingido' : 'pronto para gerar';
+    status.className = 'counter-status ok';
+    btn.disabled = false;
+  }
+}
+
+// ============ Navegação entre telas ============
+function mostrarTela(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function irParaTeste() {
+  const nome = document.getElementById('nome').value.trim();
+  const whatsapp = document.getElementById('whatsapp').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const cargo = document.getElementById('cargo').value.trim();
+  const empresa = document.getElementById('empresa').value.trim();
+
+  const erro = document.getElementById('erro-dados');
+  if (!nome || !whatsapp || !email) {
+    erro.style.display = 'block';
+    erro.textContent = 'Por favor, preencha nome, WhatsApp e e-mail para continuar.';
+    return;
+  }
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    erro.style.display = 'block';
+    erro.textContent = 'Verifique o e-mail informado.';
+    return;
+  }
+  erro.style.display = 'none';
+  dados = { nome, whatsapp, email, cargo, empresa, inicio: new Date().toISOString() };
+  mostrarTela('screen-teste');
+}
+
+function voltarParaDados() { mostrarTela('screen-dados'); }
+
+function recomecar() {
+  selecionados.clear();
+  document.querySelectorAll('.adj').forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]').forEach(i => i.value = '');
+  atualizarContador();
+  mostrarTela('screen-dados');
+}
+
+// ============ Cálculo do perfil ============
+function calcularScores(marcadas) {
+  const M = {};
+  for (const [eixo, palavras] of Object.entries(GABARITO)) {
+    palavras.forEach(p => M[p] = eixo);
+  }
+  const cont = { ACAO:0, COMUNICACAO:0, APOIO:0, ANALISE:0 };
+  marcadas.forEach(p => { if (M[p]) cont[M[p]]++; });
+  const total = Object.values(cont).reduce((a,b) => a+b, 0);
+  if (total === 0) return { cont, scores: cont };
+
+  function score(prop) {
+    return prop <= 0.25
+      ? (prop / 0.25) * 50
+      : 50 + ((prop - 0.25) / 0.75) * 50;
+  }
+  const scores = {};
+  for (const eixo of Object.keys(cont)) {
+    scores[eixo] = Math.round(score(cont[eixo] / total));
+  }
+  return { cont, scores, total };
+}
+
+function classificar(scores) {
+  // faixas: <47 baixo, 47-53 média, >53 alto
+  const ordenado = Object.entries(scores).sort((a,b) => b[1] - a[1]);
+  const altos = Object.entries(scores).filter(([e,v]) => v > 53).map(([e]) => e);
+  const medios = Object.entries(scores).filter(([e,v]) => v >= 47 && v <= 53).map(([e]) => e);
+  const acima50 = Object.entries(scores).filter(([e,v]) => v > 50).map(([e]) => e);
+
+  let codigo, tipo, descricao;
+  if (altos.length === 1 && medios.length === 0) {
+    // puro
+    codigo = SIGLA[altos[0]];
+    tipo = 'puro';
+    descricao = null;
+  } else if (acima50.length >= 2) {
+    const pri = SIGLA[ordenado[0][0]];
+    const sec = SIGLA[ordenado[1][0]];
+    codigo = pri + sec;
+    tipo = 'combinado';
+    descricao = acima50.length >= 3 ? SIGLA[ordenado[2][0]] : null; // traço de apoio
+  } else if (altos.length === 1 && medios.length > 0) {
+    codigo = SIGLA[altos[0]];
+    tipo = 'puro_com_media';
+    descricao = medios.map(e => EIXO_INFO[e].nome).join(' e ');
+  } else {
+    // sem nenhum eixo claramente alto — pega o maior
+    codigo = SIGLA[ordenado[0][0]];
+    tipo = 'amplo';
+    descricao = null;
+  }
+  return { codigo, tipo, descricao, ordenado, altos, medios };
+}
+
+// ============ Renderização do resultado ============
+function gerarLeitura(scores, classe) {
+  const arq = ARQUETIPOS[classe.codigo];
+  const ordenado = classe.ordenado;
+  const primario = EIXO_INFO[ordenado[0][0]];
+  const ultimo = EIXO_INFO[ordenado[3][0]];
+
+  const contextos = {
+    puro: `Seu perfil é claramente <strong style="color:var(--gold-soft)">${arq.nome}</strong> — ${primario.nome} domina com folga, enquanto os outros três eixos ficam abaixo da linha de 50. É um perfil intenso, concentrado, com força bem definida em uma direção.`,
+    combinado: `Seu perfil combina dois motores complementares: <strong>${primario.nome}</strong> como força principal, com <strong>${EIXO_INFO[ordenado[1][0]].nome}</strong> de apoio. Essa combinação dá nome ao seu arquétipo: <strong style="color:var(--gold-soft)">${arq.nome}</strong>.`,
+    puro_com_media: `Seu perfil tem <strong>${primario.nome}</strong> como eixo dominante claro — o que aponta para o arquétipo <strong style="color:var(--gold-soft)">${arq.nome}</strong>. Os eixos de <strong>${classe.descricao}</strong> aparecem em intensidade média (entre 47 e 53), o que significa que você expressa tanto traços do polo baixo quanto do polo alto neles, conforme o contexto. São os eixos mais maleáveis do seu perfil.`,
+    amplo: `Seu perfil é amplo — nenhum eixo se destaca de forma marcante. O que aparece em primeiro lugar é <strong>${primario.nome}</strong>, o que aproxima seu perfil de <strong style="color:var(--gold-soft)">${arq.nome}</strong>. Vale validar com leituras complementares se essa é mesmo sua expressão dominante.`
+  };
+
+  const tracoApoio = classe.descricao && classe.tipo === 'combinado'
+    ? `<p>Aparece também um <strong>traço de apoio em ${EIXO_INFO[POR_SIGLA[classe.descricao]].nome}</strong> — uma terceira cor do seu comportamento que não compõe o nome do arquétipo, mas se manifesta em diversas situações.</p>`
+    : '';
+
+  const ultimoTexto = `<p>O eixo de <strong>${ultimo.nome}</strong> aparece como o mais baixo do seu mapa. Não significa que esteja ausente, mas que não é por onde você se expressa naturalmente. É um ponto de desenvolvimento consciente, caso o seu contexto profissional exija essa energia.</p>`;
+
+  const fechamento = `<p class="destaque">Este é um retrato de como você se descreve hoje. Em mentoria, esse mapa vira o ponto de partida para mover seu perfil pelas três zonas: Talento, Poder e Performance.</p>`;
+
+  return `
+    <p>${contextos[classe.tipo]}</p>
+    <p>${arq.descricao}</p>
+    ${tracoApoio}
+    ${ultimoTexto}
+    ${fechamento}
+  `;
+}
+
+function gerarResultado() {
+  const marcadas = Array.from(selecionados);
+  const { cont, scores } = calcularScores(marcadas);
+  const classe = classificar(scores);
+  const arq = ARQUETIPOS[classe.codigo];
+
+  document.getElementById('r-nome').textContent = arq.nome;
+  document.getElementById('r-combo').textContent = arq.combo;
+  document.getElementById('r-leitura').innerHTML = gerarLeitura(scores, classe);
+
+  // ===== ENVIO PARA O BACKEND =====
+  const payload = {
+    ...dados,
+    marcadas,
+    contagem: cont,
+    scores,
+    arquetipo: arq.nome,
+    codigo: classe.codigo,
+    fim: new Date().toISOString()
+  };
+
+  // ⬇️ URL DO SEU APPS SCRIPT (troque a URL abaixo pela sua)
+  const BACKEND_URL = 'COLE_AQUI_A_URL_DO_APPS_SCRIPT';
+
+  // Envio "fire-and-forget": não trava a tela do usuário se der erro
+  if (BACKEND_URL && BACKEND_URL.startsWith('https://')) {
+    fetch(BACKEND_URL, {
+      method: 'POST',
+      mode: 'no-cors', // necessário para Apps Script — resposta não é lida, só enviada
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    }).catch(err => console.warn('Envio ao backend falhou:', err));
+  } else {
+    console.log('BACKEND_URL não configurada. Payload que seria enviado:', payload);
+  }
+
+  mostrarTela('screen-resultado');
+}
+
+// ============ Init ============
+montarGrade();
+atualizarContador();
+</script>
+</body>
+</html>
