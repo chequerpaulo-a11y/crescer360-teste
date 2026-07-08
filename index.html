@@ -639,9 +639,12 @@ function calcularScores(marcadas) {
   if (total === 0) return { cont, scores: cont };
 
   function score(prop) {
+    // Calibração 07/07/2026: 25% de concentração (divisão neutra entre os 4 eixos) = 50.
+    // 50% de concentração em um único eixo = 100 (antes exigia 100%, o que tornava
+    // scores acima de 60-70 praticamente inatingíveis na prática).
     return prop <= 0.25
       ? (prop / 0.25) * 50
-      : 50 + ((prop - 0.25) / 0.75) * 50;
+      : 50 + Math.min((prop - 0.25) / 0.25, 1) * 50;
   }
   const scores = {};
   for (const eixo of Object.keys(cont)) {
